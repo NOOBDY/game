@@ -100,7 +100,7 @@ def start():
         e_used, f_used, g_used = generate(e_used, f_used, g_used)
 
         if m == 9:
-            print("恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  恭喜挑戰成功  ")
+            print("恭喜挑戰成功")
             os.system("pause")
             exit(0)
         else:
