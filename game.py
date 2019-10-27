@@ -82,26 +82,25 @@ def generate(e, f, g):
     return e, f, g
 
 
-def start():
-    e_used = False
-    f_used = False
-    g_used = False
+e_used = False
+f_used = False
+g_used = False
 
-    print("遊戲開始")
-    print("輸入A、B、C、D作答，E、F、G啟用求救卡\nE:更換題目  F:刪去選項  G:第二條命\n你準備好了嗎?")
-    time.sleep(1)
-    for i in range(4):
-        print(3 - i)
-        time.sleep(2)
+print("遊戲開始")
+print("輸入A、B、C、D作答，E、F、G啟用求救卡\nE:更換題目  F:刪去選項  G:第二條命\n你準備好了嗎?")
+time.sleep(1)
+for i in range(4):
+    print(3 - i)
+    time.sleep(2)
 
-    for m in range(10):
-        print("第{}題:\n".format(m + 1))
+for m in range(10):
+    print("第{}題:\n".format(m + 1))
 
-        e_used, f_used, g_used = generate(e_used, f_used, g_used)
+    e_used, f_used, g_used = generate(e_used, f_used, g_used)
 
-        if m == 9:
-            print("恭喜挑戰成功")
-            os.system("pause")
-            exit(0)
-        else:
-            print("------------\n   下一題\n------------\n")
+    if m == 9:
+        print("恭喜挑戰成功")
+        os.system("pause")
+        exit(0)
+    else:
+        print("------------\n   下一題\n------------\n")
