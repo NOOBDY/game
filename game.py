@@ -4,7 +4,7 @@ import os
 import time
 
 
-path = os.path.abspath("game\\questions.csv")
+path = os.path.abspath("questions.csv")
 df = pd.read_csv(path)
 
 
