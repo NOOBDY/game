@@ -28,7 +28,7 @@ def check(x, e, f, g):
                     print("------------\n   換一題\n------------\n")
                     e = True
                     generate(e, f, g)
-                    return True, e, f, g
+                    return e, f, g
                 elif a[0] == "E" and e == True:
                     print("\n此求救卡已使用過\n")
 
@@ -51,7 +51,7 @@ def check(x, e, f, g):
                 # check answer
                 if a[0] == df["答案"][x]:
                     print("\n答案正確\n")
-                    return True, e, f, g
+                    return e, f, g
 
                 elif a[0] in "EFG":
                     pass
@@ -63,7 +63,7 @@ def check(x, e, f, g):
                 else:
                     print("\n答案錯誤\n")
                     print("正確答案應為:{}\n".format(df["答案"][x]))
-                    return False, e, f, g
+                    return e, f, g
 
             else:
                 print("資料錯誤，請重新輸入\n")
