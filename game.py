@@ -14,7 +14,7 @@ def pick(i):
         df["A選項"][i], df["B選項"][i], df["C選項"][i], df["D選項"][i]))
 
 
-def check(x, e, f, g):
+def check(i, e, f, g):
     activate = False
     while True:
         # print(df["答案"][x])
@@ -22,20 +22,20 @@ def check(x, e, f, g):
         options = ["A", "B", "C", "D"]
 
         try:
-            if a[0] in "ABCDEFG":
+            if a[0] in "ABCDEFG" and len(a) == 1:
 
                 # change question
                 if a[0] == "E" and e == False:
                     print("------------\n   換一題\n------------\n")
                     e = True
                     generate(e, f, g)
-                    return e, f, g
+                    return True, e, f, g
                 elif a[0] == "E" and e == True:
                     print("\n此求救卡已使用過\n")
 
                 # delete one option
                 if a[0] == "F" and f == False:
-                    q = (options.index(df["答案"][x]) + randint(1, 3)) % 4
+                    q = (options.index(df["答案"][i]) + randint(1, 3)) % 4
                     print("\n{}選項是錯的\n".format(options[q]))
                     f = True
                 elif a[0] == "F" and f == True:
@@ -50,20 +50,20 @@ def check(x, e, f, g):
                     print("\n此求救卡已使用過\n")
 
                 # check answer
-                if a[0] == df["答案"][x]:
+                if a[0] == df["答案"][i]:
                     print("\n答案正確\n")
-                    return e, f, g
+                    return True, e, f, g
 
                 elif a[0] in "EFG":
                     pass
 
-                elif a[0] != df["答案"][x] and activate == True:
+                elif a[0] != df["答案"][i] and activate == True:
                     print("\n答案錯誤，還有一次機會\n")
                     activate = False
 
                 else:
                     print("\n答案錯誤\n")
-                    print("正確答案應為:{}\n".format(df["答案"][x]))
+                    print("正確答案應為:{}\n".format(df["答案"][i]))
                     return False, e, f, g
 
             else:
@@ -111,6 +111,7 @@ while True:
     if i == "n":
         os.system("pause")
         break
-    elif i not in "yn":
+    elif i == "y":
+        os.system("cls")
+    else:
         print("資料錯誤，請重新輸入\n")
-    print("\n")
