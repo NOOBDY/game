@@ -17,6 +17,7 @@ def pick(i):
 def check(x, e, f, g):
     activate = False
     while True:
+        print(df["答案"][x])
         a = input("請選擇答案:").upper()
         options = ["A", "B", "C", "D"]
 
@@ -76,31 +77,40 @@ def generate(e, f, g):
     pick(i)
     b, e, f, g = check(i, e, f, g)
     if b == False:
-        print("GAME OVER")
+        print("GAME OVER\n")
+        return e, f, g, False
+    return e, f, g, True
+
+
+while True:
+    e_used = False
+    f_used = False
+    g_used = False
+
+    print("遊戲開始")
+    print("輸入A、B、C、D作答，E、F、G啟用求救卡\nE:更換題目  F:刪去選項  G:第二條命\n你準備好了嗎?")
+    time.sleep(1)
+    for i in range(4):
+        print(3 - i)
+        time.sleep(2)
+
+    for m in range(10):
+        print("第{}題:\n".format(m + 1))
+
+        e_used, f_used, g_used, b = generate(e_used, f_used, g_used)
+
+        if m == 9:
+            print("恭喜挑戰成功\n")
+            break
+        elif b == False:
+            break
+        else:
+            print("------------\n   下一題\n------------\n")
+
+    i = input("\n是否要再來一局?(y/n) ").lower()
+    if i == "n":
         os.system("pause")
-        exit(0)
-    return e, f, g
-
-
-e_used = False
-f_used = False
-g_used = False
-
-print("遊戲開始")
-print("輸入A、B、C、D作答，E、F、G啟用求救卡\nE:更換題目  F:刪去選項  G:第二條命\n你準備好了嗎?")
-time.sleep(1)
-for i in range(4):
-    print(3 - i)
-    time.sleep(2)
-
-for m in range(10):
-    print("第{}題:\n".format(m + 1))
-
-    e_used, f_used, g_used = generate(e_used, f_used, g_used)
-
-    if m == 9:
-        print("恭喜挑戰成功")
-        os.system("pause")
-        exit(0)
-    else:
-        print("------------\n   下一題\n------------\n")
+        break
+    elif i not in "yn":
+        print("資料錯誤，請重新輸入\n")
+    print("\n")
