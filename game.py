@@ -17,7 +17,7 @@ def pick(i):
 def check(x, e, f, g):
     activate = False
     while True:
-        print(df["答案"][x])
+        # print(df["答案"][x])
         a = input("請選擇答案:").upper()
         options = ["A", "B", "C", "D"]
 
@@ -64,7 +64,7 @@ def check(x, e, f, g):
                 else:
                     print("\n答案錯誤\n")
                     print("正確答案應為:{}\n".format(df["答案"][x]))
-                    return e, f, g
+                    return False, e, f, g
 
             else:
                 print("資料錯誤，請重新輸入\n")
