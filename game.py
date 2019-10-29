@@ -17,6 +17,7 @@ def pick(i):
 def check(x, e, f, g):
     activate = False
     while True:
+        print(df["答案"][x])
         a = input("請選擇答案:").upper()
         options = ["A", "B", "C", "D"]
 
@@ -76,13 +77,12 @@ def generate(e, f, g):
     pick(i)
     b, e, f, g = check(i, e, f, g)
     if b == False:
-        print("GAME OVER")
-        os.system("pause")
-        exit(0)
-    return e, f, g
+        print("GAME OVER\n")
+        return e, f, g, False
+    return e, f, g, True
 
 
-def start():
+while True:
     e_used = False
     f_used = False
     g_used = False
@@ -97,11 +97,20 @@ def start():
     for m in range(10):
         print("第{}題:\n".format(m + 1))
 
-        e_used, f_used, g_used = generate(e_used, f_used, g_used)
+        e_used, f_used, g_used, b = generate(e_used, f_used, g_used)
 
         if m == 9:
-            print("恭喜挑戰成功")
-            os.system("pause")
-            exit(0)
+            print("恭喜挑戰成功\n")
+            break
+        elif b == False:
+            break
         else:
             print("------------\n   下一題\n------------\n")
+
+    i = input("\n是否要再來一局?(y/n) ").lower()
+    if i == "n":
+        os.system("pause")
+        break
+    elif i not in "yn":
+        print("資料錯誤，請重新輸入\n")
+    print("\n")
