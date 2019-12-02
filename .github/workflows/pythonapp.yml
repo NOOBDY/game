@@ -28,6 +28,11 @@ jobs:
       run: |
         pip install pytest
         python ./test.py
-    - name: Secret test
-      with:
-        super-secret: ${{ secrets.bruh }}
+    - uses: actions/checkout@v1
+    - name: Decrypt secrets
+      run: ./.github/scripts/decrypt.sh
+      env:
+        TOKEN: $
+      
+    - name: Test decrypting
+      run: cat $HOME/secrets/token.txt
