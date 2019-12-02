@@ -2,4 +2,4 @@
 
 # mkdir $HOME/secrets
 
-gpg --quiet --batch --yes --decrypt --passphrase="$TOKEN" --output $HOME/token.txt.gpg
+gpg --quiet --batch --yes --decrypt --passphrase="$TOKEN" --output $HOME/token.txt token.txt.gpg
