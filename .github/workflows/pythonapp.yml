@@ -29,5 +29,5 @@ jobs:
         pip install pytest
         python ./test.py
     - name: Secret test
-      env:
+      with:
         super-secret: ${{ secrets.bruh }}
