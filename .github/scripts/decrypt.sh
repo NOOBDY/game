@@ -1,5 +1,5 @@
 #!/bin/bash
 
-mkdir $HOME/secrets
+# mkdir $HOME/secrets
 
-gpg --quiet --batch --yes --decrypt --passphrase="$TOKEN" --output $HOME/secrets/token.txt.gpg
+gpg --quiet --batch --yes --decrypt --passphrase="$TOKEN" --output $HOME/token.txt.gpg
