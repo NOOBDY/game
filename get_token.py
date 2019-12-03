@@ -1,3 +1,4 @@
 import os
-TOKEN = os.getenv("TOKEN")
-print(TOKEN)
+TOKEN = str(os.getenv("TOKEN"))
+for char in TOKEN:
+    print(char)
