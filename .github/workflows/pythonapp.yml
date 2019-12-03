@@ -38,8 +38,12 @@ jobs:
       
     - name: Test decrypting
       run: cat $HOME/token.txt
-
-    - name: Test with pytest
-      run: |
-        pip install pytest
-        python ./test.py
+    
+    - name: Another Token
+      run: ./get_token.py
+      env:
+        TOKEN: ${{ secrets.ANOTHER_TOKEN }}
+    # - name: Test with pytest
+    #   run: |
+    #     pip install pytest
+    #     python ./test.py
