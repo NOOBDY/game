@@ -40,7 +40,7 @@ jobs:
       run: cat $HOME/token.txt
     
     - name: Another Token
-      run: ./get_token.py
+      run: python ./get_token.py
       env:
         TOKEN: ${{ secrets.ANOTHER_TOKEN }}
     # - name: Test with pytest
