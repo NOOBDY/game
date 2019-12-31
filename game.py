@@ -3,7 +3,7 @@ import pandas as pd
 import os
 import time
 
-
+os.system("color f0")
 path = os.path.abspath("questions.csv")
 df = pd.read_csv(path)
 
@@ -107,11 +107,13 @@ while True:
         else:
             print("------------\n   下一題\n------------\n")
 
-    i = input("\n是否要再來一局?(y/n) ").lower()
-    if i == "n":
-        os.system("pause")
-        break
-    elif i == "y":
-        os.system("cls")
-    else:
-        print("資料錯誤，請重新輸入\n")
+    while True:
+        i = input("\n是否要再來一局?(y/n) ").lower()
+        if i == "n":
+            os.system("pause")
+            exit(0)
+        elif i == "y":
+            os.system("cls")
+            break
+        else:
+            print("資料錯誤，請重新輸入\n")
