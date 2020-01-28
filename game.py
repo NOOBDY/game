@@ -54,11 +54,9 @@ def check(i, e, f, g):
                 print("\n答案正確\n")
                 b = True
                 break
-
             elif a[0] != df["答案"][i] and activate == True:
                 print("\n答案錯誤，還有一次機會\n")
                 activate = False
-
             else:
                 print("\n答案錯誤\n")
                 print("正確答案應為:{}\n".format(df["答案"][i]))
@@ -87,10 +85,10 @@ while True:
 
     print("遊戲開始")
     print("輸入A、B、C、D作答，E、F、G啟用求救卡\nE:更換題目  F:刪去選項  G:第二條命\n你準備好了嗎?")
-    # time.sleep(1)
-    # for i in range(4):
-    #     print(3 - i)
-    #     time.sleep(2)
+    time.sleep(1)
+    for i in range(4):
+        print(3 - i)
+        time.sleep(2)
 
     for m in range(10):
         print("第{}題:\n".format(m + 1))
