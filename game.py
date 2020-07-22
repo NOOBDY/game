@@ -13,7 +13,7 @@ class Question:
     The Question class takes 1 arguement and contains 6 attributes\n
 
     Arguement:\n
-        \tindex: An int specifying the index of the question from the data\n
+        \tindex: The index of the question from the data\n
     Attributes:\n
         \tquestion: The question itself
         \tA: Option A
@@ -44,14 +44,14 @@ class ActivationCard:
     def __init__(self):
         self.isUsed = False
 
-    def useCard(self, question: Question):
+    def useCard(self):
         """
-        If a card has not been activated call each cards _activate() method.\n
+        If a card has not been activated, activate each cards ability.\n
         Else, inform the player the card has been activated.
         """
         if self.isUsed is False:
             self.isUsed = True
-            self._activate(question)
+            self._activate()
         else:
             print("\n此求救卡已使用過\n")
 
@@ -64,8 +64,24 @@ class ChangeQuestionCard(ActivationCard):
     def __init__(self):
         super().__init__()
 
-    def _activate(self):
+    def useCard(self):
+        super().useCard()
         print("test")
+
+
+class RemoveOptionCard(ActivationCard):
+    """
+    Removes one incorrect option `useCard()` method takes a `question` arguement
+    """
+
+    def useCard(self, question):
+        super().useCard()
+
+        # show one wrong option by convert correct answer to ASCII code and add a random int then convert back to chr
+        wrongOption = chr(
+            (ord(question.answer) + randint(0, 2)) % 4 + 65)
+
+        print(f"\n{wrongOption}選項是錯的\n")
 
 
 class SecondChanceCard(ActivationCard):
@@ -76,86 +92,67 @@ class SecondChanceCard(ActivationCard):
 
     def __init__(self):
         super().__init__()
-        self.activated = False
+        self.isActivated = False
 
-    def _activate(self):
-        pass
-
-
-class RemoveOptionCard(ActivationCard):
-    def __init__(self):
-        super().__init__()
-
-    def _activate(self, question: Question):
-        # show one wrong option by convert correct answer to ASCII code and add a random num then convert back to chr
-        wrongOption = chr(
-            (ord(question.answer) + randint(0, 2)) % 4 + 65)
-
-        print(f"\n{wrongOption}選項是錯的\n")
+    def useCard(self):
+        super().useCard()
+        self.isActivated = True
 
 
-def check(question: Question, e, f: RemoveOptionCard, g):
-    activate = False
+def check(question: Question, c: ChangeQuestionCard, r: RemoveOptionCard, s: SecondChanceCard):
     while True:
-        answer = input("請選擇答案:").upper()
-        b = False
+        answer = input("請選擇答案:").strip().upper()
+        isCorrect = False
 
         if len(answer) == 1 and answer[0] in "ABCDEFG":
             # change question
-            if answer[0] == "E" and e == False:
+            if answer[0] == "E":
                 print("------------\n   換一題\n------------\n")
                 e = True
-                e, f, g, b = generate(e, f, g)
+                c, r, s, isCorrect = generate(c, r, s)
                 break
-            elif answer[0] == "E" and e == True:
-                print("\n此求救卡已使用過\n")
 
-            # delete one option
+            # remove one option
             if answer[0] == "F":
-                f.useCard(question)
+                r.useCard(question)
 
             # second chance
-            if answer[0] == "G" and g == False:
-                print("\n啟用第二次機會\n")
-                g = True
-                activate = True
-            elif answer[0] == "G" and g == True:
-                print("\n此求救卡已使用過\n")
+            if answer[0] == "G":
+                s.useCard()
 
             # check answer
             if answer[0] == question.answer:
                 print("\n答案正確\n")
-                b = True
+                isCorrect = True
                 break
-            elif answer[0] != question.answer and activate == True:
+            elif s.isActivated == True:
                 print("\n答案錯誤，還有一次機會\n")
-                activate = False
+                s.isActivated = False
             else:
                 print("\n答案錯誤\n")
                 print(f"正確答案應為:{question.answer}\n")
-                b = False
+                isCorrect = False
                 break
 
         else:
             print("\n資料錯誤，請重新輸入\n")
 
-    return b, e, f, g
+    return isCorrect, c, r, s
 
 
 def generate(e: ChangeQuestionCard, f: RemoveOptionCard, g: SecondChanceCard):
-    i = randint(0, len(df))
-    question = Question(i)
+    index = randint(0, len(df))
+    question = Question(index)
     question.printQuestion()
-    b, e, f, g = check(question, e, f, g)
-    if b == False:
-        return e, f, g, False
-    return e, f, g, True
+    isCorrect, e, f, g = check(question, e, f, g)
+    return e, f, g, isCorrect
 
 
 def start():
-    changeQuestionCard = ChangeQuestionCard()
-    removeOptionCard = RemoveOptionCard()
-    secondChanceCard = SecondChanceCard()
+    c = ChangeQuestionCard()
+    r = RemoveOptionCard()
+    s = SecondChanceCard()
+    existedQuestions = []
 
     # game starting sequence
     # TODO: add this back
@@ -169,8 +166,7 @@ def start():
     for m in range(10):
         print("第{}題:\n".format(m + 1))
 
-        e_used, f_used, g_used, b = generate(
-            changeQuestionCard, removeOptionCard, secondChanceCard)
+        c, r, s, b = generate(c, r, s)
 
         if m == 9:
             print("恭喜挑戰成功\n")
@@ -185,12 +181,13 @@ def start():
 while True:
     start()
 
-    i = input("\n是否要再來一局?(y/n)").lower()
-    if i == "n":
-        os.system("pause")
-        exit(0)
-    elif i == "y":
-        os.system("cls")
-        break
-    else:
-        print("資料錯誤，請重新輸入\n")
+    while True:
+        i = input("\n是否要再來一局?(y/n)").lower()
+        if i == "n":
+            os.system("pause")
+            exit(0)
+        elif i == "y":
+            os.system("cls")
+            break
+        else:
+            print("資料錯誤，請重新輸入\n")
