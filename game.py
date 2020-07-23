@@ -10,17 +10,17 @@ df = pd.read_csv(path)
 
 class Question:
     """
-    The Question class takes 1 arguement and contains 6 attributes\n
+    The `Question` class takes 1 arguement and contains 6 attributes\n
 
     Arguement:\n
-        \tindex: The index of the question from the data\n
+          index: The index of the question from the data\n
     Attributes:\n
-        \tquestion: The question itself
-        \tA: Option A
-        \tB: Option B
-        \tC: Option C
-        \tD: Option D
-        \tanswer: The answer to the question
+          question: The question itself
+          A: Option A
+          B: Option B
+          C: Option C
+          D: Option D
+          answer: The answer to the question
     """
 
     def __init__(self, index: int):
