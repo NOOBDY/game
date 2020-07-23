@@ -49,9 +49,8 @@ class ActivationCard:
         If a card has not been activated, activate each cards ability.\n
         Else, inform the player the card has been activated.
         """
-        if self.isUsed is False:
+        if not self.isUsed:
             self.isUsed = True
-            self._activate()
         else:
             print("\n此求救卡已使用過\n")
 
@@ -64,9 +63,10 @@ class ChangeQuestionCard(ActivationCard):
     def __init__(self):
         super().__init__()
 
-    def useCard(self):
+    def useCard(self, change, remove, second):
+        print("------------\n   換一題\n------------\n")
         super().useCard()
-        print("test")
+        return generate(change, remove, second)
 
 
 class RemoveOptionCard(ActivationCard):
@@ -77,11 +77,12 @@ class RemoveOptionCard(ActivationCard):
     def useCard(self, question):
         super().useCard()
 
+        print("\n刪去一個錯誤選項")
         # show one wrong option by convert correct answer to ASCII code and add a random int then convert back to chr
         wrongOption = chr(
             (ord(question.answer) + randint(0, 2)) % 4 + 65)
 
-        print(f"\n{wrongOption}選項是錯的\n")
+        print(f"{wrongOption}選項是錯的\n")
 
 
 class SecondChanceCard(ActivationCard):
@@ -96,82 +97,84 @@ class SecondChanceCard(ActivationCard):
 
     def useCard(self):
         super().useCard()
+
+        print("啟用第二次機會")
+        # Once activated, a wrong answer can bypass the checking system at line 132
         self.isActivated = True
 
 
-def check(question: Question, c: ChangeQuestionCard, r: RemoveOptionCard, s: SecondChanceCard):
+def check(question: Question, change, remove, second):
     while True:
-        answer = input("請選擇答案:").strip().upper()
+        userInput = input("請選擇答案: ").strip().upper()
         isCorrect = False
 
-        if len(answer) == 1 and answer[0] in "ABCDEFG":
+        if len(userInput) == 1 and userInput[0] in "ABCDEFG":
             # change question
-            if answer[0] == "E":
-                print("------------\n   換一題\n------------\n")
-                e = True
-                c, r, s, isCorrect = generate(c, r, s)
+            if userInput[0] == "E":
+                change, remove, second, isCorrect = change.useCard(
+                    change, remove, second)
                 break
 
             # remove one option
-            if answer[0] == "F":
-                r.useCard(question)
+            if userInput[0] == "F":
+                remove.useCard(question)
 
             # second chance
-            if answer[0] == "G":
-                s.useCard()
+            if userInput[0] == "G":
+                second.useCard()
 
             # check answer
-            if answer[0] == question.answer:
-                print("\n答案正確\n")
-                isCorrect = True
-                break
-            elif s.isActivated == True:
-                print("\n答案錯誤，還有一次機會\n")
-                s.isActivated = False
-            else:
-                print("\n答案錯誤\n")
-                print(f"正確答案應為:{question.answer}\n")
-                isCorrect = False
-                break
+            if userInput in "ABCD":
+                if userInput[0] == question.answer:
+                    print("\n答案正確\n")
+                    isCorrect = True
+                    break
+                elif second.isActivated == True:
+                    print("\n答案錯誤，還有一次機會\n")
+                    second.isActivated = False
+                else:
+                    print("\n答案錯誤\n")
+                    print(f"正確答案應為:{question.answer}\n")
+                    isCorrect = False
+                    break
 
         else:
             print("\n資料錯誤，請重新輸入\n")
 
-    return isCorrect, c, r, s
+    return isCorrect, change, remove, second
 
 
-def generate(e: ChangeQuestionCard, f: RemoveOptionCard, g: SecondChanceCard):
+def generate(change: ChangeQuestionCard, remove: RemoveOptionCard, second: SecondChanceCard):
     index = randint(0, len(df))
     question = Question(index)
     question.printQuestion()
-    isCorrect, e, f, g = check(question, e, f, g)
-    return e, f, g, isCorrect
+    isCorrect, change, remove, second = check(question, change, remove, second)
+    return change, remove, second, isCorrect
 
 
 def start():
-    c = ChangeQuestionCard()
-    r = RemoveOptionCard()
-    s = SecondChanceCard()
+    change = ChangeQuestionCard()
+    remove = RemoveOptionCard()
+    second = SecondChanceCard()
     existedQuestions = []
 
     # game starting sequence
-    # TODO: add this back
-    # print("遊戲開始")
-    # print("輸入A、B、C、D作答，E、F、G啟用求救卡\nE:更換題目  F:刪去選項  G:第二條命\n你準備好了嗎?")
-    # time.sleep(1)
-    # for i in range(4):
-    #     print(3 - i)
-    #     time.sleep(2)
+    print("遊戲開始")
+    print("輸入A、B、C、D作答，E、F、G啟用求救卡\nE:更換題目  F:刪去選項  G:第二條命\n你準備好了嗎?")
+    time.sleep(1)
+    for i in range(4):
+        print(3 - i)
+        time.sleep(2)
 
     for m in range(10):
         print("第{}題:\n".format(m + 1))
 
-        c, r, s, b = generate(c, r, s)
+        change, remove, second, isCorrect = generate(change, remove, second)
 
         if m == 9:
             print("恭喜挑戰成功\n")
             return None
-        elif b == False:
+        elif isCorrect == False:
             print("\nGAME OVER\n")
             return None
         else:
