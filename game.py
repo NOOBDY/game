@@ -10,9 +10,9 @@ df = pd.read_csv(path)
 
 class Question:
     """
-    The `Question` class takes 1 arguement and contains 6 attributes\n
+    The `Question` class takes 1 argument and contains 6 attributes\n
 
-    Arguement:\n
+    Argument:\n
           index: The index of the question from the data\n
     Attributes:\n
           question: The question itself
@@ -71,7 +71,7 @@ class ChangeQuestionCard(ActivationCard):
 
 class RemoveOptionCard(ActivationCard):
     """
-    Removes one incorrect option `useCard()` method takes a `question` arguement
+    Removes one incorrect option `useCard()` method takes a `question` argument
     """
 
     def useCard(self, question):
