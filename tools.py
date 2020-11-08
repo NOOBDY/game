@@ -1,6 +1,6 @@
 from random import randint
 
-from question import Question, df
+from question import Question
 
 
 class ActivationCard:
@@ -32,7 +32,7 @@ class ChangeQuestionCard(ActivationCard):
     def useCard(self, change, remove, second):
         if super().useCard():
             print("------------\n   換一題\n------------\n")
-            return generate(change, remove, second)
+            return generate(change, remove, second, questions_list[-1])
 
         else:
             return change, remove, second, None
@@ -68,53 +68,3 @@ class SecondChanceCard(ActivationCard):
             print("啟用第二次機會")
             # Once activated, a wrong answer can bypass the checking system at line 132
             self.isActivated = True
-
-
-def generate(change: ChangeQuestionCard, remove: RemoveOptionCard, second: SecondChanceCard):
-    index = randint(0, len(df))
-    question = Question(index)
-    question.printQuestion()
-    isCorrect, change, remove, second = check(question, change, remove, second)
-    return change, remove, second, isCorrect
-
-
-def check(question: Question, change, remove, second):
-    while True:
-        userInput = input("請選擇答案: ").strip().upper()
-        isCorrect = False
-
-        if len(userInput) == 1 and userInput[0] in "ABCDEFG":
-            # change question
-            if userInput[0] == "E":
-                change, remove, second, isCorrect = change.useCard(
-                    change, remove, second)
-                if isCorrect is not None:
-                    break
-
-            # remove one option
-            if userInput[0] == "F":
-                remove.useCard(question)
-
-            # second chance
-            if userInput[0] == "G":
-                second.useCard()
-
-            # check answer
-            if userInput in "ABCD":
-                if userInput[0] == question.answer:
-                    print("\n答案正確\n")
-                    isCorrect = True
-                    break
-                elif second.isActivated == True:
-                    print("\n答案錯誤，還有一次機會\n")
-                    second.isActivated = False
-                else:
-                    print("\n答案錯誤\n")
-                    print(f"正確答案應為:{question.answer}\n")
-                    isCorrect = False
-                    break
-
-        else:
-            print("\n資料錯誤，請重新輸入\n")
-
-    return isCorrect, change, remove, second

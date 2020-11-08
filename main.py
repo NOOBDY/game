@@ -1,16 +1,16 @@
 import os
 import time
-from random import randint
+from random import sample
 
-from tools import (ChangeQuestionCard, RemoveOptionCard, SecondChanceCard,
-                   generate)
+from tools import ChangeQuestionCard, RemoveOptionCard, SecondChanceCard
+from question import df, Question
 
 
 def start():
     change = ChangeQuestionCard()
     remove = RemoveOptionCard()
     second = SecondChanceCard()
-    existedQuestions = []
+    questions_list = sample(range(0, len(df)), 11)
 
     # game starting sequence
     print("遊戲開始")
@@ -23,7 +23,12 @@ def start():
     for m in range(10):
         print("第{}題:\n".format(m + 1))
 
-        change, remove, second, isCorrect = generate(change, remove, second)
+        change, remove, second, isCorrect = generate(
+            change,
+            remove,
+            second,
+            questions_list[m]
+        )
 
         if m == 9:
             print("恭喜挑戰成功\n")
@@ -34,8 +39,54 @@ def start():
         else:
             print("------------\n   下一題\n------------\n")
 
-# THIS SHIT BLINDS YOUR EYES
-# os.system("color f0")
+
+def generate(change: ChangeQuestionCard, remove: RemoveOptionCard, second: SecondChanceCard, index: int):
+    question = Question(index)
+    question.printQuestion()
+    isCorrect, change, remove, second = check(question, change, remove, second)
+    return change, remove, second, isCorrect
+
+
+def check(question: Question, change, remove, second):
+    while True:
+        userInput = input("請選擇答案: ").strip().upper()
+        isCorrect = False
+
+        if len(userInput) == 1 and userInput[0] in "ABCDEFG":
+            # change question
+            if userInput[0] == "E":
+                change, remove, second, isCorrect = change.useCard(
+                    change, remove, second)
+                if isCorrect is not None:
+                    break
+
+            # remove one option
+            if userInput[0] == "F":
+                remove.useCard(question)
+
+            # second chance
+            if userInput[0] == "G":
+                second.useCard()
+
+            # check answer
+            if userInput in "ABCD":
+                if userInput[0] == question.answer:
+                    print("\n答案正確\n")
+                    isCorrect = True
+                    break
+                elif second.isActivated == True:
+                    print("\n答案錯誤，還有一次機會\n")
+                    second.isActivated = False
+                else:
+                    print("\n答案錯誤\n")
+                    print(f"正確答案應為:{question.answer}\n")
+                    isCorrect = False
+                    break
+
+        else:
+            print("\n資料錯誤，請重新輸入\n")
+
+    return isCorrect, change, remove, second
 
 
 while True:
