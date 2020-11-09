@@ -16,26 +16,23 @@ def start():
     print("遊戲開始")
     print("輸入A、B、C、D作答，E、F、G啟用求救卡\nE:更換題目  F:刪去選項  G:第二條命\n你準備好了嗎?")
     time.sleep(1)
-    for i in range(3):
+    for i in range(2):
         print(3 - i)
         time.sleep(2)
 
     for m in range(10):
         print("第{}題:\n".format(m + 1))
 
-        change, remove, second, isCorrect = generate(change, remove, second)
+        isCorrect, change, remove, second = generate(change, remove, second)
 
-        if m == 9:
+        if m == 9 and isCorrect:
             print("恭喜挑戰成功\n")
             return None
-        elif isCorrect == False:
+        elif not isCorrect:
             print("\nGAME OVER\n")
             return None
         else:
             print("------------\n   下一題\n------------\n")
-
-# THIS SHIT BLINDS YOUR EYES
-# os.system("color f0")
 
 
 while True:

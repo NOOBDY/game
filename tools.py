@@ -65,7 +65,7 @@ class SecondChanceCard(ActivationCard):
 
     def useCard(self):
         if super().useCard():
-            print("啟用第二次機會")
+            print("\n啟用第二次機會\n")
             # Once activated, a wrong answer can bypass the checking system at line 132
             self.isActivated = True
 
@@ -75,7 +75,7 @@ def generate(change: ChangeQuestionCard, remove: RemoveOptionCard, second: Secon
     question = Question(index)
     question.printQuestion()
     isCorrect, change, remove, second = check(question, change, remove, second)
-    return change, remove, second, isCorrect
+    return isCorrect, change, remove, second
 
 
 def check(question: Question, change, remove, second):
@@ -86,7 +86,7 @@ def check(question: Question, change, remove, second):
         if len(userInput) == 1 and userInput[0] in "ABCDEFG":
             # change question
             if userInput[0] == "E":
-                change, remove, second, isCorrect = change.useCard(
+                isCorrect, change, remove, second = change.useCard(
                     change, remove, second)
                 if isCorrect is not None:
                     break
