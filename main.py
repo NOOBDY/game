@@ -2,7 +2,7 @@ import os
 import time
 from random import sample
 
-from tools import Change, Remove, Second, check
+from tools import *
 from question import df, Question
 
 
@@ -12,9 +12,8 @@ def start():
     remove = Remove()
     second = Second()
 
-    print(questions_list)
-
     # game starting sequence
+    clear()
     print("遊戲開始")
     print("輸入A、B、C、D作答，E、F、G啟用求救卡\nE:更換題目  F:刪去選項  G:第二條命\n你準備好了嗎?")
     time.sleep(1)
@@ -48,10 +47,10 @@ while True:
     while True:
         i = input("\n是否要再來一局?(y/n)").lower()
         if i == "n":
-            os.system("pause")
+            pause()
             exit(0)
         elif i == "y":
-            os.system("cls")
+            clear()
             break
         else:
             print("資料錯誤，請重新輸入\n")

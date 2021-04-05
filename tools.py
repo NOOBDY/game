@@ -1,3 +1,4 @@
+import os
 from random import randint
 
 from question import Question
@@ -117,3 +118,12 @@ def check(question: Question, change: Change, remove: Remove, second: Second):
             print("\n資料錯誤，請重新輸入\n")
 
     return change, remove, second, isCorrect
+
+
+# will add unix support in the future
+def clear():
+    os.system("cls")
+
+
+def pause():
+    os.system("pause")
